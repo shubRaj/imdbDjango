@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  {% load static %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="{% static 'imdbClone/images/tor.png' %}" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5FEQC0L8QH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-5FEQC0L8QH');
+    </script>
+    <title>{% block title %}Tor Movies{% endblock title %}</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark m-1">
+      <a class="navbar-brand" href="{% url 'app_imdbclone:imdbclone_home' %}">
+        <img src="{% static 'imdbClone/images/tor.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        Tor Movies
+      </a>
+    </nav>
+    <div class="container">
+      {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{message.level_tag}}" role="alert">
+          {{message.message}}
+        </div>
+      {% endfor %}
+      {% endif %}
+      {% block content %}
+      {% endblock content %}
+    </div>
+    <footer class="navbar" >
+      <div class="container">
+        <span class="text-muted">&copy; Copyright {% now 'Y' %} <a href="{{request.get_full_host}}">{{request.get_host}}</a></span>
+      </div>
+    </footer>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+      jQuery.noConflict();
+      jQuery(document).on("click",".overlay",
+        function(){
+          $.LoadingOverlaySetup({
+    background      : "rgba(0, 0, 0, 0.5)",
+    image           : "{% static 'imdbClone/images/tor.png' %}",
+    imageAnimation  : "1.5s fadein",
+    imageColor      : "#ffcc00"
+})
+$.LoadingOverlay("show")
+        }
+      );
+      jQuery('toolTip').tooltip('toggle');
+    </script>
+    
+    {% block extra_script %}
+    {% endblock extra_script %}
+  </body>
+</html>

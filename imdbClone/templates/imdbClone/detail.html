@@ -1,0 +1,68 @@
+{% extends 'imdbClone/base.html' %}
+{% block title %}
+    {{torrent.title|title}}
+{% endblock title %}
+{% block content %}
+<div class="row mt-3">
+    <div class="col-md-auto">
+        <div class="card">
+          <div class="card-body">
+                <img src="{{torrent.cover}}" class="rounded mx-auto d-block" alt="{{torrent.title|title}}">
+                <h4 class="card-title text-center">{{torrent.title|title}}</h4>
+                <div class="list-group">
+                    <li class="list-group-item">Genres:{{torrent.genres|default:"N/A"}}</li>
+                    <li class="list-group-item">IMDB:{{torrent.rating|default:"N/A"}}</li>
+                    <li class="list-group-item">Runtimes:{{torrent.runtimes|default:"N/A"}}</li>
+                    <li class="list-group-item">Year:{{torrent.year|default:"N/A"}}</li>
+                </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+            <h3 class="card-title text-center">Casts , Directors & Plot</h3>
+            <div class="list-group">
+                <li class="list-group-item"><b>Casts:</b> {{torrent.casts|default:"N/A"|truncatewords:"25"}}</li>
+                <li class="list-group-item"><b>Directors:</b> {{torrent.directors|default:"N/A"|truncatewords:"5"}}</li>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="list-group">
+                <li class="list-group-item"><b>Plot:</b> {{torrent.plot|default:"N/A"|truncatewords:"25"}}</li>
+            </div>
+            
+        </div>
+      </div>
+    </div>
+</div>
+<div class="card mt-2">
+    <div class="card-body">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">S/L</th>
+                <th scope="col">Size</th>
+                <th scope="col">Magnet</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for tor in torrent.torrent_magnet.all %}
+            <tr>
+                {% if request.user_agent.is_mobile %}
+                <td id="toolTip" title="{{tor.name}}" >{{tor.name|truncatechars:"20"}}</td>
+                {% else %}
+                <td id="toolTip" title="{{tor.name}}" >{{tor.name}}</td>
+                {% endif %}
+                <td>{{tor.seeders}}/{{tor.leechers}}</td>
+                <td>{{tor.size}}</td>
+                <td><a href="{{tor.magnet}}">MAGNET</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

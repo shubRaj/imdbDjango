@@ -1,0 +1,95 @@
+{% extends 'imdbClone/base.html' %}
+{% block content %}
+<form method="post" class="mt-3">
+    {% csrf_token %}
+    <input class="form-control" type="text" placeholder="Search" name="query" aria-label="Search">
+</form>
+{% if objects %}
+<style>
+    .card:hover{
+      transform: scale(1.05);
+   box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);  cursor: pointer;}
+  </style>
+    <div class="row m-2">
+        {% for object in objects %}
+            <div class="col-sm-6 mb-4 {{object.id}} overlay">
+                <div class="card">
+                    <img class="card-img-top img-thumbnail" src="{{object.i.0}}" alt="{{object.l}}-thumbnail">
+                </div>
+            </div>
+            <script>
+                
+                jQuery.noConflict;
+                jQuery(".{{object.id}}").click(
+                  function(){
+                window.location = "{% url 'app_imdbclone:imdbclone_home' object.id|slice:'2:' %}"
+                  }
+                );
+              </script>
+        {% endfor %}
+    </div>
+    {% if objects.has_next or objects.has_previous %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+                {% if objects.has_previous %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <li class="page-item">
+                            <input type="hidden" name="page" value="1">
+                            <input type="hidden" name="query" value="{{request.POST.query}}">
+                            <button class="page-link" type="submit">First</button>
+                        </li>
+                    </form>
+                    <form method="post">
+                        {% csrf_token %}
+                        <li class="page-item">
+                            <input type="hidden" name="page" value="{{objects.previous_page_number}}">
+                            <input type="hidden" name="query" value="{{request.POST.query}}">
+                            <button class="page-link" type="submit">Previous</button>
+                        </li>
+                    </form>
+                {% endif %}
+                {% for page_num in objects.paginator.page_range %}
+                    {% if page_num == objects.number %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <li class="page-item active">
+                                <input type="hidden" name="page" value="{{page_num}}">
+                                <input type="hidden" name="query" value="{{request.POST.query}}">
+                                <button class="page-link" type="submit">{{page_num}}</button>
+                            </li>
+                        </form>
+                    {% elif page_num > objects.number|add:"-2" and page_num < objects.number|add:"2" %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <li class="page-item">
+                                <input type="hidden" name="page" value="{{page_num}}">
+                                <input type="hidden" name="query" value="{{request.POST.query}}">
+                                <button class="page-link" type="submit">{{page_num}}</button>
+                            </li>
+                        </form>
+                    {% endif %}
+                {% endfor %}
+                {% if objects.has_next %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <li class="page-item">
+                            <input type="hidden" name="page" value="{{objects.next_page_number}}">
+                            <input type="hidden" name="query" value="{{request.POST.query}}">
+                            <button class="page-link" type="submit">Next</button>
+                        </li>
+                    </form>
+                    <form method="post">
+                        {% csrf_token %}
+                        <li class="page-item">
+                            <input type="hidden" name="page" value="{{objects.paginator.num_pages}}">
+                            <input type="hidden" name="query" value="{{request.POST.query}}">
+                            <button class="page-link" type="submit">Last</button>
+                        </li>
+                    </form>
+                {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+{% endif %}
+{% endblock content %}
