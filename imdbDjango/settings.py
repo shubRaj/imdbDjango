@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'imdbDjango.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get("DB_ENGINE"),
+        'NAME': os.environ.get("DB_NAME"),
+        'PORT':os.environ.get("DB_PORT"),
+        'HOST':os.environ.get("DB_HOST"),
+        "USER":os.environ.get("DB_NAME"),
+        "PASSWORD":os.environ.get("DB_PASSWORD")
     }
 }
 
