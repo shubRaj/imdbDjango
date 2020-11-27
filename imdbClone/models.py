@@ -9,7 +9,7 @@ class Torrent(models.Model):
     runtimes = models.CharField(max_length=10,null=True)
     year = models.IntegerField(null=True)
     directors = models.CharField(max_length=100,null=True)
-    casts = models.CharField(max_length=280,null=True)
+    casts = models.TextField(null=True)
     cover = models.URLField(null=True)
     plot = models.TextField(null=True)
     added_on=models.DateTimeField(default=timezone.now,editable=False)
